@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yh.robot.mapper.RobotMessageTemplateMapper">
+    
+    <resultMap type="com.yh.robot.domain.RobotMessageTemplate" id="RobotMessageTemplateResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="content"    column="content"    />
+        <result property="images"    column="images"    />
+        <result property="tempType"    column="temp_type"    />
+        <result property="config"    column="config"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectRobotMessageTemplateVo">
+        select id, name, content, images, temp_type, config, create_time, update_time from robot_message_template
+    </sql>
+
+    <select id="selectRobotMessageTemplateList" parameterType="com.yh.robot.domain.RobotMessageTemplate" resultMap="RobotMessageTemplateResult">
+        <include refid="selectRobotMessageTemplateVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="tempType != null "> and temp_type = #{tempType}</if>
+        </where>
+    </select>
+    
+    <select id="selectRobotMessageTemplateById" parameterType="Long" resultMap="RobotMessageTemplateResult">
+        <include refid="selectRobotMessageTemplateVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRobotMessageTemplate" parameterType="com.yh.robot.domain.RobotMessageTemplate" useGeneratedKeys="true" keyProperty="id">
+        insert into robot_message_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="content != null">content,</if>
+            <if test="images != null">images,</if>
+            <if test="tempType != null">temp_type,</if>
+            <if test="config != null">config,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="content != null">#{content},</if>
+            <if test="images != null">#{images},</if>
+            <if test="tempType != null">#{tempType},</if>
+            <if test="config != null">#{config},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRobotMessageTemplate" parameterType="com.yh.robot.domain.RobotMessageTemplate">
+        update robot_message_template
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="images != null">images = #{images},</if>
+            <if test="tempType != null">temp_type = #{tempType},</if>
+            <if test="config != null">config = #{config},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRobotMessageTemplateById" parameterType="Long">
+        delete from robot_message_template where id = #{id}
+    </delete>
+
+    <delete id="deleteRobotMessageTemplateByIds" parameterType="String">
+        delete from robot_message_template where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

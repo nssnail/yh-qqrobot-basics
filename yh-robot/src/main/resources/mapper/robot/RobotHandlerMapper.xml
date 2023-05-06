@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yh.robot.mapper.RobotHandlerMapper">
+
+    <resultMap type="com.yh.robot.domain.RobotHandler" id="RobotHandlerResult">
+        <result property="id"    column="id"    />
+        <result property="beanName"    column="bean_name"    />
+        <result property="handleName"    column="handle_name"    />
+        <result property="handleType"    column="handle_type"    />
+        <result property="sendMsgType"    column="send_msg_type"    />
+        <result property="status"    column="status"    />
+        <result property="isApi"    column="is_api"    />
+        <result property="sortNum"    column="sort_num"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectRobotHandlerVo">
+        select id, bean_name, handle_name, handle_type, send_msg_type, status,is_api, sort_num, create_time, update_time from robot_handler
+    </sql>
+
+    <select id="selectRobotHandlerList" parameterType="com.yh.robot.domain.RobotHandler" resultMap="RobotHandlerResult">
+        <include refid="selectRobotHandlerVo"/>
+        <where>
+            <if test="beanName != null  and beanName != ''"> and bean_name like concat('%', #{beanName}, '%')</if>
+            <if test="handleName != null  and handleName != ''"> and handle_name like concat('%', #{handleName}, '%')</if>
+            <if test="handleType != null "> and handle_type = #{handleType}</if>
+            <if test="sendMsgType != null "> and send_msg_type = #{sendMsgType}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="isApi != null "> and is_api = #{isApi}</if>
+            <if test="sortNum != null "> and sort_num = #{sortNum}</if>
+        </where>
+        order by  sort_num , create_time desc
+    </select>
+
+    <select id="selectRobotHandlerById" parameterType="Long" resultMap="RobotHandlerResult">
+        <include refid="selectRobotHandlerVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertRobotHandler" parameterType="com.yh.robot.domain.RobotHandler" useGeneratedKeys="true" keyProperty="id">
+        insert into robot_handler
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="beanName != null">bean_name,</if>
+            <if test="handleName != null">handle_name,</if>
+            <if test="handleType != null">handle_type,</if>
+            <if test="sendMsgType != null">send_msg_type,</if>
+            <if test="status != null">status,</if>
+            <if test="isApi != null">is_api,</if>
+            <if test="sortNum != null">sort_num,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="beanName != null">#{beanName},</if>
+            <if test="handleName != null">#{handleName},</if>
+            <if test="handleType != null">#{handleType},</if>
+            <if test="sendMsgType != null">#{sendMsgType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="isApi != null">#{isApi},</if>
+            <if test="sortNum != null">#{sortNum},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateRobotHandler" parameterType="com.yh.robot.domain.RobotHandler">
+        update robot_handler
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="beanName != null">bean_name = #{beanName},</if>
+            <if test="handleName != null">handle_name = #{handleName},</if>
+            <if test="handleType != null">handle_type = #{handleType},</if>
+            <if test="sendMsgType != null">send_msg_type = #{sendMsgType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="isApi != null">is_api = #{isApi},</if>
+            <if test="sortNum != null">sort_num = #{sortNum},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRobotHandlerById" parameterType="Long">
+        delete from robot_handler where id = #{id}
+    </delete>
+
+    <delete id="deleteRobotHandlerByIds" parameterType="String">
+        delete from robot_handler where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

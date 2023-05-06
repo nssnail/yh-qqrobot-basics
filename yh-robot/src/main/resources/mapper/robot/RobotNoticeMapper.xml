@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yh.robot.mapper.RobotNoticeMapper">
+    
+    <resultMap type="com.yh.robot.domain.RobotNotice" id="RobotNoticeResult">
+        <result property="id"    column="id"    />
+        <result property="notice"    column="notice"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectRobotNoticeVo">
+        select id, notice, create_time, update_time from robot_notice
+    </sql>
+
+    <select id="selectRobotNoticeList" parameterType="com.yh.robot.domain.RobotNotice" resultMap="RobotNoticeResult">
+        <include refid="selectRobotNoticeVo"/>
+        <where>  
+            <if test="notice != null  and notice != ''"> and notice = #{notice}</if>
+        </where>
+    </select>
+    
+    <select id="selectRobotNoticeById" parameterType="Long" resultMap="RobotNoticeResult">
+        <include refid="selectRobotNoticeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRobotNotice" parameterType="com.yh.robot.domain.RobotNotice" useGeneratedKeys="true" keyProperty="id">
+        insert into robot_notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="notice != null">notice,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="notice != null">#{notice},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRobotNotice" parameterType="com.yh.robot.domain.RobotNotice">
+        update robot_notice
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="notice != null">notice = #{notice},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRobotNoticeById" parameterType="Long">
+        delete from robot_notice where id = #{id}
+    </delete>
+
+    <delete id="deleteRobotNoticeByIds" parameterType="String">
+        delete from robot_notice where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

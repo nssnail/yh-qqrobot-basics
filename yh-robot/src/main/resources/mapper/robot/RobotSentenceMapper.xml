@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yh.robot.mapper.RobotSentenceMapper">
+
+    <resultMap type="com.yh.robot.domain.RobotSentence" id="RobotSentenceResult">
+        <result property="id"    column="id"    />
+        <result property="sentence"    column="sentence"    />
+        <result property="translation"    column="translation"    />
+        <result property="year"    column="year"    />
+        <result property="sentenceExplain"    column="sentence_explain"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectRobotSentenceVo">
+        select id, sentence, translation, year, sentence_explain, create_time from robot_sentence
+    </sql>
+
+    <select id="selectRobotSentenceList" parameterType="com.yh.robot.domain.RobotSentence" resultMap="RobotSentenceResult">
+        <include refid="selectRobotSentenceVo"/>
+        <where>
+            <if test="sentence != null  and sentence != ''"> and sentence = #{sentence}</if>
+            <if test="translation != null  and translation != ''"> and translation = #{translation}</if>
+            <if test="year != null  and year != ''"> and year = #{year}</if>
+            <if test="sentenceExplain != null  and sentenceExplain != ''"> and sentence_explain = #{sentenceExplain}</if>
+        </where>
+    </select>
+
+    <select id="selectRobotSentenceById" parameterType="Long" resultMap="RobotSentenceResult">
+        <include refid="selectRobotSentenceVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertRobotSentence" parameterType="com.yh.robot.domain.RobotSentence" useGeneratedKeys="true" keyProperty="id">
+        insert into robot_sentence
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sentence != null">sentence,</if>
+            <if test="translation != null">translation,</if>
+            <if test="year != null">year,</if>
+            <if test="sentenceExplain != null">sentence_explain,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sentence != null">#{sentence},</if>
+            <if test="translation != null">#{translation},</if>
+            <if test="year != null">#{year},</if>
+            <if test="sentenceExplain != null">#{sentenceExplain},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateRobotSentence" parameterType="com.yh.robot.domain.RobotSentence">
+        update robot_sentence
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sentence != null">sentence = #{sentence},</if>
+            <if test="translation != null">translation = #{translation},</if>
+            <if test="year != null">year = #{year},</if>
+            <if test="sentenceExplain != null">sentence_explain = #{sentenceExplain},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRobotSentenceById" parameterType="Long">
+        delete from robot_sentence where id = #{id}
+    </delete>
+
+    <delete id="deleteRobotSentenceByIds" parameterType="String">
+        delete from robot_sentence where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

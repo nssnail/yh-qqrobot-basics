@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yh.robot.mapper.RobotFriendsRelMapper">
+    
+    <resultMap type="com.yh.robot.domain.RobotFriendsRel" id="RobotFriendsRelResult">
+        <result property="id"    column="id"    />
+        <result property="qq"    column="user_id"    />
+        <result property="relId"    column="rel_id"    />
+        <result property="relType"    column="rel_type"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectRobotFriendsRelVo">
+        select id, user_id, rel_id, rel_type, create_time from robot_friends_rel
+    </sql>
+
+    <select id="selectRobotFriendsRelList" parameterType="com.yh.robot.domain.RobotFriendsRel" resultMap="RobotFriendsRelResult">
+        <include refid="selectRobotFriendsRelVo"/>
+        <where>  
+            <if test="qq != null "> and user_id = #{qq}</if>
+            <if test="relId != null "> and rel_id = #{relId}</if>
+            <if test="relType != null "> and rel_type = #{relType}</if>
+        </where>
+    </select>
+    
+    <select id="selectRobotFriendsRelById" parameterType="Long" resultMap="RobotFriendsRelResult">
+        <include refid="selectRobotFriendsRelVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRobotFriendsRel" parameterType="com.yh.robot.domain.RobotFriendsRel" useGeneratedKeys="true" keyProperty="id">
+        insert into robot_friends_rel
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qq != null">user_id,</if>
+            <if test="relId != null">rel_id,</if>
+            <if test="relType != null">rel_type,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="qq != null">#{qq},</if>
+            <if test="relId != null">#{relId},</if>
+            <if test="relType != null">#{relType},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRobotFriendsRel" parameterType="com.yh.robot.domain.RobotFriendsRel">
+        update robot_friends_rel
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="qq != null">user_id = #{qq},</if>
+            <if test="relId != null">rel_id = #{relId},</if>
+            <if test="relType != null">rel_type = #{relType},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRobotFriendsRelById" parameterType="Long">
+        delete from robot_friends_rel where id = #{id}
+    </delete>
+
+    <delete id="deleteRobotFriendsRelByIds" parameterType="String">
+        delete from robot_friends_rel where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yh.robot.mapper.RobotKeyWordMapper">
+
+    <resultMap type="com.yh.robot.domain.RobotKeyWord" id="RobotKeyWordResult">
+        <result property="id"    column="id"    />
+        <result property="keyWord"    column="key_word"    />
+        <result property="sortNums"    column="sort_nums"    />
+        <result property="isRandom"    column="is_random"    />
+        <result property="remake"    column="remake"    />
+        <result property="beanName"    column="bean_name"    />
+        <result property="method"    column="method"    />
+        <result property="handleId"    column="handle_id"    />
+        <result property="handleType"    column="handle_type"    />
+        <result property="state"    column="state"    />
+        <result property="sendMsgType"    column="send_msg_type"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectRobotKeyWordVo">
+        select id, key_word, sort_nums, is_random, remake, bean_name, method, handle_id, handle_type, state, send_msg_type, create_time, update_time from robot_key_word
+    </sql>
+
+    <select id="selectRobotKeyWordList" parameterType="com.yh.robot.domain.RobotKeyWord" resultMap="RobotKeyWordResult">
+        <include refid="selectRobotKeyWordVo"/>
+        <where>
+            <if test="keyWord != null  and keyWord != ''"> and key_word = #{keyWord}</if>
+            <if test="sortNums != null "> and sort_nums = #{sortNums}</if>
+            <if test="isRandom != null "> and is_random = #{isRandom}</if>
+            <if test="remake != null  and remake != ''"> and remake = #{remake}</if>
+            <if test="beanName != null  and beanName != ''"> and bean_name like concat('%', #{beanName}, '%')</if>
+            <if test="method != null  and method != ''"> and method = #{method}</if>
+            <if test="handleId != null "> and handle_id = #{handleId}</if>
+            <if test="handleType != null "> and handle_type = #{handleType}</if>
+            <if test="state != null "> and state = #{state}</if>
+            <if test="sendMsgType != null "> and send_msg_type = #{sendMsgType}</if>
+        </where>
+        order by sort_nums,create_time desc
+    </select>
+
+    <select id="selectRobotKeyWordById" parameterType="Long" resultMap="RobotKeyWordResult">
+        <include refid="selectRobotKeyWordVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertRobotKeyWord" parameterType="com.yh.robot.domain.RobotKeyWord" useGeneratedKeys="true" keyProperty="id">
+        insert into robot_key_word
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="keyWord != null">key_word,</if>
+            <if test="sortNums != null">sort_nums,</if>
+            <if test="isRandom != null">is_random,</if>
+            <if test="remake != null">remake,</if>
+            <if test="beanName != null">bean_name,</if>
+            <if test="method != null">method,</if>
+            <if test="handleId != null">handle_id,</if>
+            <if test="handleType != null">handle_type,</if>
+            <if test="state != null">state,</if>
+            <if test="sendMsgType != null">send_msg_type,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="keyWord != null">#{keyWord},</if>
+            <if test="sortNums != null">#{sortNums},</if>
+            <if test="isRandom != null">#{isRandom},</if>
+            <if test="remake != null">#{remake},</if>
+            <if test="beanName != null">#{beanName},</if>
+            <if test="method != null">#{method},</if>
+            <if test="handleId != null">#{handleId},</if>
+            <if test="handleType != null">#{handleType},</if>
+            <if test="state != null">#{state},</if>
+            <if test="sendMsgType != null">#{sendMsgType},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateRobotKeyWord" parameterType="com.yh.robot.domain.RobotKeyWord">
+        update robot_key_word
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="keyWord != null">key_word = #{keyWord},</if>
+            <if test="sortNums != null">sort_nums = #{sortNums},</if>
+            <if test="isRandom != null">is_random = #{isRandom},</if>
+            <if test="remake != null">remake = #{remake},</if>
+            <if test="beanName != null">bean_name = #{beanName},</if>
+            <if test="method != null">method = #{method},</if>
+            <if test="handleId != null">handle_id = #{handleId},</if>
+            <if test="handleType != null">handle_type = #{handleType},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="sendMsgType != null">send_msg_type = #{sendMsgType},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRobotKeyWordById" parameterType="Long">
+        delete from robot_key_word where id = #{id}
+    </delete>
+
+    <delete id="deleteRobotKeyWordByIds" parameterType="String">
+        delete from robot_key_word where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

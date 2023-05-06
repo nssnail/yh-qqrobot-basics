@@ -1,0 +1,48 @@
+postUrl: "http://127.0.0.1:5700/"
+qq: 123
+
+# 代理配置
+proxy:
+  # 是否开启代理,7890是clash代理的默认端口，其他代理自行配置
+  enable: true
+  # 代理url
+  url: 127.0.0.1
+  # 代理端口
+  port: 7890
+
+# https://openai.com/
+openai:
+  # 使用real则走真实接口，使用proxy则走代理地址
+  use: real
+  # 代理地址，无需开启代理即可访问，有被盗秘钥风险，谨慎使用
+  proxyUrl: https://api.openai-proxy.com/pro/chat/completions
+  # chatgpt原始地址，需要开启代理访问
+  realUrl: https://api.openai.com/v1/chat/completions
+  # 如果10分钟不提问自动关闭当前会话
+  expireTime: 60000
+  apiKeys:
+    # 秘钥
+    - "123"
+#    - "123"
+
+# https://www.alapi.cn/
+alapi:
+  token: 123
+
+# https://www.free-api.com/
+freeApi:
+  appId: 123
+  appSecret: 123
+  appkey: 123
+
+# 有道翻译 https://ai.youdao.com/
+youdaoApi:
+  url: https://openapi.youdao.com/api
+  appKey: 123
+  appSecret: 123
+
+verify:
+   words:
+     - "微信"
+     - "好友"
+     - "qq"
