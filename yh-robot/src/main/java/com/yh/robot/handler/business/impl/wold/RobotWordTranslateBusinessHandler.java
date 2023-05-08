@@ -43,7 +43,7 @@ public class RobotWordTranslateBusinessHandler implements RobotBusinessHandler {
     }
 
     private String buildStr(YouDaoResult youDaoResult) {
-        String query = "单词：" + youDaoResult.getQuery() + "\n";
+        String query = "原文：" + youDaoResult.getQuery() + "\n";
         Basic basic = youDaoResult.getBasic();
         List<String> phonetics = new ArrayList<>();
         if (ObjectUtils.isNotEmpty(basic)) {
