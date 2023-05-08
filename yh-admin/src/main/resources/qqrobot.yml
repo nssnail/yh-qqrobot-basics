@@ -14,7 +14,7 @@ proxy:
 openai:
   # 使用real则走真实接口，使用proxy则走代理地址
   use: real
-  # 代理地址，无需开启代理即可访问，有被盗秘钥风险，谨慎使用
+  # 代理地址，无需开启代理即可访问，有被盗秘钥风险，谨慎使用，暂时未发现问题
   proxyUrl: https://api.openai-proxy.com/pro/chat/completions
   # chatgpt原始地址，需要开启代理访问
   realUrl: https://api.openai.com/v1/chat/completions
