@@ -41,7 +41,7 @@
       <el-col :sm="24" :lg="12" style="padding-left: 20px">
         <h2>yh-qqrobot开放平台</h2>
         <p>
-          基于若依和go-cqhttp实现的机器人，因为喜欢研究一下比较有趣的东西，然后这种机器人暂时没见到使用java开发，所以就写了一个来玩
+          基于若依和go-cqhttp实现的机器人，因为喜欢研究一下比较有趣的东西，然后这种机器人暂时没见到使用java开发，所以就写了一个来玩，个人能力有限，有bug可以提issues，欢迎大家进群交流
         </p>
         <p>
           <el-tag type="danger">&yen;免费开源</el-tag>

@@ -8,8 +8,9 @@
             <li>spring boot</li>
             <li>redis</li>
             <li>mysql</li>
-            <li>rocketmq</li>
+            <!-- <li>rocketmq</li> -->
             <li>quartz</li>
+            <li>腾讯云oss</li>
           </ul>
         </div>
       </div>
