@@ -31,7 +31,7 @@ import java.util.List;
 @Service("ChatGPTRealClient")
 @Slf4j
 @Primary
-public class ChatChatGPTRealClient extends ChatGPTClient {
+public class ChatGPTRealClient extends ChatGPTClient {
 
 
     @Override

@@ -4,22 +4,19 @@ import com.yh.common.exception.robot.BotException;
 import com.yh.robot.third.chatgpt.result.ChatGPTResult;
 import com.yh.robot.util.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author nssnail
  * @Description TODO
  * @createTime 2023年04月19日 11:29:00
  */
-@Service("ChatGPTProxyClient")
+//@Service("ChatGPTProxyClient")
 @Slf4j
 //@Primary
-public class ChatChatGPTProxyClient extends ChatGPTClient {
+public class ChatGPTProxyClient extends ChatGPTClient {
 
 
     @Override
