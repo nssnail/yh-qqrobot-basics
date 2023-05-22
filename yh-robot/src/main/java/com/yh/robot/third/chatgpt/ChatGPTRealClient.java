@@ -6,7 +6,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.util.StringUtil;
 import com.yh.common.exception.ServiceException;
 import com.yh.common.exception.robot.BotException;
-import com.yh.common.utils.StringUtils;
 import com.yh.robot.redis.RedisKey;
 import com.yh.robot.third.chatgpt.param.ChatGPTParam;
 import com.yh.robot.third.chatgpt.result.GPTResult;
@@ -14,10 +13,12 @@ import com.yh.robot.third.chatgpt.result.GPTRole;
 import com.yh.robot.util.CommonUtil;
 import com.yh.robot.util.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class ChatGPTRealClient extends ChatGPTClient {
 
     @Override
     public String getText(String msg, String sessionId,String secretKey) {
-        Assert.isTrue(StringUtils.isNoneBlank(sessionId), () -> new ServiceException("sessionid不能为空"));
+        Assert.isTrue(org.apache.commons.lang3.StringUtils.isNoneBlank(sessionId), () -> new ServiceException("sessionid不能为空"));
         String redisKey = RedisKey.CHAT_REAL_ID.getKey(sessionId);
         String list = client.get(redisKey);
         List<GPTRole> gptRoles = new ArrayList<>();
@@ -51,9 +52,15 @@ public class ChatGPTRealClient extends ChatGPTClient {
         GPTResult result = null;
         try {
             result = HttpUtil.post(chatGPTConfig.getRealUrl(), JSONObject.toJSONString(gptParam), headers, GPTResult.class);
-        }catch (Exception e){
+        }catch (HttpClientErrorException.BadRequest e) {
+            log.error("chatgpt接口访问异常,400异常->", e);
+            String message = e.getMessage();
+            if (StringUtils.isNoneBlank(message) && message.contains("maximum")) {
+                throw BotException.error("单个会话长度超出上限，请输入'关闭会话'后重试");
+            }
+        } catch (Exception e) {
             log.error("chatgpt接口访问异常->", e);
-            throw BotException.error("chatgpt接口访问异常，可能人数访问较多或者超出当前会话上上限，请稍后重试或者尝试输入关闭会话");
+            throw BotException.error("chatgpt接口访问异常，可能人数访问较多,请稍后重试");
         }
         log.info("chatgpt原始接口返回：{}", JSONObject.toJSONString(result));
         GPTRole message = result.getChoices().get(0).getMessage();
